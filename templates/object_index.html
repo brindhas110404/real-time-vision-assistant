@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Object Detection
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            Virtual Assistant
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a
+                href="/object_recog"
+                class="active"
+            >
+
+                Object Detection
+
+            </a>
+
+
+            <a
+                href="/face_recog"
+            >
+
+                Face Recognition
+
+            </a>
+
+
+            <a
+                href="/camera_settings"
+            >
+
+                Camera Settings
+
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main class="content">
+
+        <section class="card">
+
+            <h1>
+
+                Object Detection
+
+            </h1>
+
+
+            <p class="subtitle">
+
+                Detect objects using your
+                selected camera.
+
+            </p>
+
+
+            <!-- CAMERA -->
+
+            <div class="camera-shell">
+
+                <div
+                    id="placeholder"
+                    class="camera-placeholder"
+                >
+
+                    Object detection is stopped.
+
+                </div>
+
+
+                <img
+                    id="camera"
+                    class="hidden"
+                    alt="Object detection camera"
+                >
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="controls">
+
+                <button
+                    id="startButton"
+                    class="btn"
+                    onclick="startObject()"
+                >
+
+                    Start Detection
+
+                </button>
+
+
+                <button
+                    id="stopButton"
+                    class="btn danger"
+                    onclick="stopObject()"
+                    disabled
+                >
+
+                    Stop
+
+                </button>
+
+            </div>
+
+
+            <!-- SETTINGS -->
+
+            <div class="controls">
+
+                <a
+                    class="btn secondary"
+                    href="/camera_settings"
+                >
+
+                    Camera Settings
+
+                </a>
+
+
+                <a
+                    class="btn secondary"
+                    href="/face_recog"
+                >
+
+                    Face Recognition
+
+                </a>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="status"
+                class="status"
+            >
+
+                Ready.
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        Virtual Assistant
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+const camera =
+    document.getElementById(
+        "camera"
+    );
+
+
+const placeholder =
+    document.getElementById(
+        "placeholder"
+    );
+
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+
+const stopButton =
+    document.getElementById(
+        "stopButton"
+    );
+
+
+const statusBox =
+    document.getElementById(
+        "status"
+    );
+
+
+let running = false;
+
+
+function setStatus(
+    message,
+    type = ""
+) {
+
+    statusBox.textContent =
+        message;
+
+    statusBox.className =
+        "status " + type;
+
+}
+
+
+// ==================================================
+// START
+// ==================================================
+
+async function startObject() {
+
+    if (running) {
+
+        return;
+
+    }
+
+
+    startButton.disabled =
+        true;
+
+
+    setStatus(
+        "Starting selected camera..."
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/object_start",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            !response.ok
+            || !result.success
+        ) {
+
+            throw new Error(
+                result.message
+                || "Could not start detection."
+            );
+
+        }
+
+
+        camera.src =
+            result.stream_url
+            + "?t="
+            + Date.now();
+
+
+        camera.classList.remove(
+            "hidden"
+        );
+
+
+        placeholder.classList.add(
+            "hidden"
+        );
+
+
+        stopButton.disabled =
+            false;
+
+
+        running = true;
+
+
+        setStatus(
+            "Object detection is running.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        setStatus(
+            error.message,
+            "error"
+        );
+
+
+        startButton.disabled =
+            false;
+
+    }
+
+}
+
+
+// ==================================================
+// STOP
+// ==================================================
+
+async function stopObject() {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    stopButton.disabled =
+        true;
+
+
+    setStatus(
+        "Stopping camera..."
+    );
+
+
+    try {
+
+        await fetch(
+            "/object_close_video",
+            {
+                method: "POST"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+
+    camera.src = "";
+
+
+    camera.classList.add(
+        "hidden"
+    );
+
+
+    placeholder.classList.remove(
+        "hidden"
+    );
+
+
+    running = false;
+
+
+    startButton.disabled =
+        false;
+
+
+    setStatus(
+        "Object detection stopped."
+    );
+
+}
+
+
+// ==================================================
+// PAGE CLOSE
+// ==================================================
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (running) {
+
+            navigator.sendBeacon(
+                "/object_close_video"
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

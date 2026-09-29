@@ -1,0 +1,609 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #0f172a;
+
+    color: #e5e7eb;
+
+}
+
+
+button,
+input {
+
+    font: inherit;
+
+}
+
+
+button {
+
+    border: 0;
+
+    cursor: pointer;
+
+}
+
+
+/* ==================================================
+   PAGE
+   ================================================== */
+
+.page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* ==================================================
+   HEADER
+   ================================================== */
+
+.topbar {
+
+    padding:
+        18px
+        28px;
+
+    background: #111827;
+
+    border-bottom:
+        1px solid
+        #263244;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap: 20px;
+
+}
+
+
+.brand {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+}
+
+
+.nav {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.nav a {
+
+    text-decoration: none;
+
+    color: #cbd5e1;
+
+    padding:
+        9px
+        14px;
+
+    border-radius: 8px;
+
+}
+
+
+.nav a:hover {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+
+.nav a.active {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+
+/* ==================================================
+   CONTENT
+   ================================================== */
+
+.content {
+
+    width:
+        min(
+            1100px,
+            94%
+        );
+
+    margin:
+        35px
+        auto;
+
+    flex: 1;
+
+}
+
+
+/* ==================================================
+   CARD
+   ================================================== */
+
+.card {
+
+    background: #111827;
+
+    border:
+        1px solid
+        #263244;
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(
+            0,
+            0,
+            0,
+            .18
+        );
+
+}
+
+
+h1 {
+
+    margin-top: 0;
+
+}
+
+
+.subtitle {
+
+    color: #94a3b8;
+
+}
+
+
+/* ==================================================
+   CAMERA
+   ================================================== */
+
+.camera-shell {
+
+    margin-top: 22px;
+
+    background: #020617;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    aspect-ratio:
+        16 / 9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.camera-shell img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
+
+.camera-placeholder {
+
+    color: #64748b;
+
+    text-align: center;
+
+    padding: 30px;
+
+}
+
+
+/* ==================================================
+   BUTTONS
+   ================================================== */
+
+.controls {
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+
+}
+
+
+.btn {
+
+    display: inline-block;
+
+    padding:
+        12px
+        18px;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+}
+
+
+.btn:hover {
+
+    background: #1d4ed8;
+
+}
+
+
+.btn.secondary {
+
+    background: #334155;
+
+}
+
+
+.btn.secondary:hover {
+
+    background: #475569;
+
+}
+
+
+.btn.danger {
+
+    background: #dc2626;
+
+}
+
+
+.btn.danger:hover {
+
+    background: #b91c1c;
+
+}
+
+
+.btn.success {
+
+    background: #16a34a;
+
+}
+
+
+.btn.success:hover {
+
+    background: #15803d;
+
+}
+
+
+.btn:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==================================================
+   STATUS
+   ================================================== */
+
+.status {
+
+    margin-top: 15px;
+
+    padding:
+        12px
+        14px;
+
+    border-radius: 9px;
+
+    background: #1e293b;
+
+    color: #cbd5e1;
+
+}
+
+
+.status.success {
+
+    background: #052e16;
+
+    color: #bbf7d0;
+
+}
+
+
+.status.error {
+
+    background: #450a0a;
+
+    color: #fecaca;
+
+}
+
+
+/* ==================================================
+   FORM
+   ================================================== */
+
+.form-row {
+
+    margin-top: 20px;
+
+}
+
+
+.form-row label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+
+}
+
+
+.form-row input {
+
+    width: 100%;
+
+    padding:
+        13px
+        14px;
+
+    border-radius: 9px;
+
+    border:
+        1px solid
+        #475569;
+
+    background: #020617;
+
+    color: white;
+
+    outline: none;
+
+}
+
+
+.form-row input:focus {
+
+    border-color: #3b82f6;
+
+}
+
+
+/* ==================================================
+   CAPTURED PHOTO
+   ================================================== */
+
+.captured-photo {
+
+    max-width: 100%;
+
+    max-height: 100%;
+
+    border-radius: 12px;
+
+    display: block;
+
+    margin: 0 auto;
+
+    object-fit: contain;
+
+}
+
+
+/* ==================================================
+   HIDDEN
+   ================================================== */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* ==================================================
+   FOOTER
+   ================================================== */
+
+.footer {
+
+    padding: 18px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media (
+    max-width: 700px
+) {
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .content {
+
+        margin-top: 20px;
+
+    }
+
+
+    .card {
+
+        padding: 18px;
+
+    }
+
+}
+
+/* ==========================================================
+   CAMERA SETTINGS
+   ========================================================== */
+
+.camera-info {
+
+    margin: 15px auto 20px auto;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    max-width: 500px;
+
+}
+
+
+.camera-options {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    max-width: 600px;
+
+    margin: 25px auto;
+
+}
+
+
+.camera-option {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    cursor: pointer;
+
+    text-align: left;
+
+}
+
+
+.camera-option:hover {
+
+    background: rgba(255, 255, 255, 0.10);
+
+}
+
+
+.camera-option input {
+
+    width: auto;
+
+    margin-top: 4px;
+
+    transform: scale(1.3);
+
+}
+
+
+.camera-option strong {
+
+    font-size: 18px;
+
+}
+
+
+.camera-option p {
+
+    margin: 7px 0;
+
+}
+
+
+.camera-option small {
+
+    opacity: 0.65;
+
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Camera Settings
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <style>
+
+        .camera-setting-box {
+
+            max-width: 600px;
+
+            margin: 0 auto;
+
+            padding: 30px;
+
+            background: #222;
+
+            border-radius: 15px;
+
+        }
+
+        .camera-setting-box label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            font-size: 18px;
+
+        }
+
+        .camera-select {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            border: none;
+
+            font-size: 16px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .save-camera {
+
+            display: inline-block;
+
+            padding: 13px 25px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            background: #28a745;
+
+            color: white;
+
+            font-size: 16px;
+
+        }
+
+        .camera-info {
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            background: #333;
+
+            border-radius: 10px;
+
+            line-height: 1.6;
+
+        }
+
+        .error {
+
+            color: #ff6b6b;
+
+            margin-bottom: 20px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            Virtual Assistant
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="/object_recog">
+
+                Object Detection
+
+            </a>
+
+
+            <a href="/face_recog">
+
+                Face Recognition
+
+            </a>
+
+
+            <a
+                href="/camera_settings"
+                class="active"
+            >
+
+                Camera Settings
+
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main class="content">
+
+        <section class="card">
+
+            <h1>
+                Camera Settings
+            </h1>
+
+
+            <p class="subtitle">
+
+                Choose which camera should be used
+                by the Virtual Assistant.
+
+            </p>
+
+
+            {% if error %}
+
+                <div class="error">
+
+                    {{ error }}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="camera-setting-box">
+
+
+                <form
+                    action="/camera_settings"
+                    method="POST"
+                >
+
+                    <label for="camera_index">
+
+                        Select Camera
+
+                    </label>
+
+
+                    <select
+                        id="camera_index"
+                        name="camera_index"
+                        class="camera-select"
+                        required
+                    >
+                    <option
+                        value="0"
+                        {% if selected_camera == 0 %}
+                            selected
+                        {% endif %}
+                    >
+                        iPhone / Continuity Camera
+                    </option>
+
+                    <option
+                        value="1"
+                        {% if selected_camera == 1 %}
+                            selected
+                        {% endif %}
+                    >
+                        MacBook Camera
+                    </option>
+                </select>
+
+
+                    <button
+                        type="submit"
+                        class="save-camera"
+                    >
+
+                        Save Camera
+
+                    </button>
+
+                </form>
+
+
+                <div class="camera-info">
+
+                    <strong>
+                        Important:
+                    </strong>
+
+                    <br><br>
+
+                    The camera numbers are assigned by
+                    macOS/OpenCV.
+
+                    <br><br>
+
+                    On your Mac, Camera 0 may be your
+                    iPhone/Continuity Camera and Camera 1
+                    may be the MacBook camera.
+
+                    <br><br>
+
+                    If those numbers are different on
+                    your computer, try the available
+                    camera numbers until you find the
+                    desired device.
+
+                    <br><br>
+
+                    After selecting a camera, use the
+                    same device for Object Detection,
+                    Face Recognition and Add New Face.
+
+                </div>
+
+            </div>
+
+
+            <div class="controls">
+
+                <a
+                    class="btn secondary"
+                    href="/object_recog"
+                >
+
+                    Object Detection
+
+                </a>
+
+
+                <a
+                    class="btn secondary"
+                    href="/face_recog"
+                >
+
+                    Face Recognition
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        Virtual Assistant
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>

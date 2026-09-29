@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Face Recognition
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+            Virtual Assistant
+        </div>
+
+
+        <nav class="nav">
+
+            <a
+                href="/object_recog"
+            >
+                Object Detection
+            </a>
+
+
+            <a
+                href="/face_recog"
+                class="active"
+            >
+                Face Recognition
+            </a>
+
+
+            <a
+                href="/camera_settings"
+            >
+                Camera Settings
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main class="content">
+
+        <section class="card">
+
+            <h1>
+                Face Recognition
+            </h1>
+
+
+            <p class="subtitle">
+
+                Recognize faces from your saved
+                face database.
+
+            </p>
+
+
+            {% if error %}
+
+                <div class="status error">
+
+                    {{ error }}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- CAMERA -->
+
+            <div class="camera-shell">
+
+                <div
+                    id="placeholder"
+                    class="camera-placeholder"
+                >
+
+                    Face recognition is stopped.
+
+                </div>
+
+
+                <img
+                    id="camera"
+                    class="hidden"
+                    alt="Face recognition camera"
+                >
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="controls">
+
+                <button
+                    id="startButton"
+                    class="btn"
+                    onclick="startFace()"
+                >
+
+                    Start Recognition
+
+                </button>
+
+
+                <button
+                    id="stopButton"
+                    class="btn danger"
+                    onclick="stopFace()"
+                    disabled
+                >
+
+                    Stop
+
+                </button>
+
+
+                <a
+                    class="btn success"
+                    href="/Add_face"
+                >
+
+                    Add New Face
+
+                </a>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="status"
+                class="status"
+            >
+
+                Ready.
+
+            </div>
+
+
+            <!-- CAMERA SETTINGS -->
+
+            <div class="controls">
+
+                <a
+                    class="btn secondary"
+                    href="/camera_settings"
+                >
+
+                    Camera Settings
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        Virtual Assistant
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+const camera =
+    document.getElementById(
+        "camera"
+    );
+
+
+const placeholder =
+    document.getElementById(
+        "placeholder"
+    );
+
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+
+const stopButton =
+    document.getElementById(
+        "stopButton"
+    );
+
+
+const statusBox =
+    document.getElementById(
+        "status"
+    );
+
+
+let running = false;
+
+
+function setStatus(
+    message,
+    type = ""
+) {
+
+    statusBox.textContent =
+        message;
+
+    statusBox.className =
+        "status " + type;
+
+}
+
+
+// ==================================================
+// START
+// ==================================================
+
+async function startFace() {
+
+    if (running) {
+
+        return;
+
+    }
+
+
+    startButton.disabled =
+        true;
+
+
+    setStatus(
+        "Starting selected camera..."
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/face_start",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            !response.ok
+            || !result.success
+        ) {
+
+            throw new Error(
+                result.message
+                || "Could not start recognition."
+            );
+
+        }
+
+
+        camera.src =
+            result.stream_url
+            + "?t="
+            + Date.now();
+
+
+        camera.classList.remove(
+            "hidden"
+        );
+
+
+        placeholder.classList.add(
+            "hidden"
+        );
+
+
+        stopButton.disabled =
+            false;
+
+
+        running = true;
+
+
+        setStatus(
+            "Face recognition is running.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        setStatus(
+            error.message,
+            "error"
+        );
+
+
+        startButton.disabled =
+            false;
+
+    }
+
+}
+
+
+// ==================================================
+// STOP
+// ==================================================
+
+async function stopFace() {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    stopButton.disabled =
+        true;
+
+
+    setStatus(
+        "Stopping camera..."
+    );
+
+
+    try {
+
+        await fetch(
+            "/close_video",
+            {
+                method: "POST"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+
+    camera.src = "";
+
+
+    camera.classList.add(
+        "hidden"
+    );
+
+
+    placeholder.classList.remove(
+        "hidden"
+    );
+
+
+    running = false;
+
+
+    startButton.disabled =
+        false;
+
+
+    setStatus(
+        "Face recognition stopped."
+    );
+
+}
+
+
+// ==================================================
+// PAGE CLOSE
+// ==================================================
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (running) {
+
+            navigator.sendBeacon(
+                "/close_video"
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

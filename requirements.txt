@@ -1,0 +1,4 @@
+Flask>=2.3,<4
+opencv-python>=4.8,<5
+face-recognition==1.3.0
+imageai==3.0.3

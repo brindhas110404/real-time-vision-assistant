@@ -1,0 +1,13 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.log
+static/captured_faces/
+faces/
+*.data
+*.pt
+*.h5
