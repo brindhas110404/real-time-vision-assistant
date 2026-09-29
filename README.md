@@ -72,7 +72,3 @@ Generated captures, known-face photos, cached files, and model weights are kept 
 - Object detection speed depends on the camera, CPU/GPU, and pretrained model. Face recognition can make mistakes, especially with poor lighting or occlusion.
 - The application uses Flask's development server and should not be exposed to the public internet without additional security and deployment work.
 - Voice input and speech output are not implemented in this version.
-
-## Attribution
-
-This project is based on [Deimos-M/DL-Virtual-Assistant](https://github.com/Deimos-M/DL-Virtual-Assistant), which provided the initial Flask, object detection, and face recognition application. This version reorganizes the camera controllers and streams, adds camera selection and a capture/preview/registration flow, and updates the interface and documentation. ImageAI supplies the pretrained object detection model; `face_recognition` and dlib supply face detection and encoding.
