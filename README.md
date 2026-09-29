@@ -18,8 +18,11 @@ This is a computer vision application built with pretrained models; it does not 
 ```mermaid
 flowchart LR
     A[Browser] --> B[Flask routes]
-    B --> C[Camera selection and lock]
-    C --> D{Selected mode}
+    B --> C{Selected camera index}
+    L[Laptop webcam] --> C
+    P[Phone exposed as webcam] --> C
+    C --> V[OpenCV capture with camera lock]
+    V --> D{Selected mode}
     D --> E[TinyYOLOv3 object detection]
     D --> F[dlib-backed face recognition]
     E --> G[Object MJPEG stream]
