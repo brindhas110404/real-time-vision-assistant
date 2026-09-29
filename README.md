@@ -9,7 +9,7 @@ This is a computer vision application built with pretrained models; it does not 
 - Object detection using ImageAI's pretrained TinyYOLOv3 model.
 - Face detection and encoding using `face_recognition` (backed by dlib), with known faces loaded from a local `faces/` folder.
 - Separate browser streams for object detection and face recognition; a lock coordinates camera access when switching modes or capturing a photo.
-- Camera selection in the browser, with indexes determined by the operating system.
+- Camera selection in the browser: use the laptop's built-in webcam or a phone camera that the computer exposes as a webcam (for example, iPhone Continuity Camera). The operating system determines each camera's index.
 - Face enrollment with capture, preview, name entry, and validation that exactly one face is visible. Capture reads eight frames and saves the last valid one.
 - Face recognition processes frames at 25% of the original width and height and streams JPEG at quality 90.
 
@@ -49,7 +49,7 @@ Download ImageAI's pretrained [TinyYOLOv3 `.pt` model](https://github.com/Olafen
 python App.py
 ```
 
-Open `http://127.0.0.1:5000/camera_settings` and select a working camera index. Then choose object detection or face recognition. To register a person, open face recognition, capture a photo, review it, and save it with a name. Registered images remain in the local `faces/` directory. Captured photos remain in `static/captured_faces/` until removed.
+Open `http://127.0.0.1:5000/camera_settings` and select the laptop webcam or a connected phone camera by its working camera index. The phone must appear as a camera device on the computer; opening this page on a phone does not use the phone's browser camera. Then choose object detection or face recognition. To register a person, open face recognition, capture a photo, review it, and save it with a name. Registered images remain in the local `faces/` directory. Captured photos remain in `static/captured_faces/` until removed.
 
 On Windows, activate the environment with `.venv\Scripts\activate` instead of the `source` command above.
 
